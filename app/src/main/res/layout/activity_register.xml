@@ -1,56 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".register_activity"
-    android:layout_margin="16dp">
+    android:fillViewport="true"
+    tools:context=".RegisterActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/registration"
-        android:textAlignment="center"
-        android:textColor="@android:color/holo_purple"
-        android:textSize="32sp" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editViewEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/registration"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="32sp" />
 
-    <EditText
-        android:id="@+id/editViewPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/password" />
+        <EditText
+            android:id="@+id/editViewEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/editViewName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name" />
+        <EditText
+            android:id="@+id/editViewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
-    <EditText
-        android:id="@+id/editViewLastName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/last_name" />
+        <EditText
+            android:id="@+id/editViewName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/name"
+            android:inputType="textCapWords" />
 
-    <EditText
-        android:id="@+id/editViewOld"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/how_old_are_you" />
+        <EditText
+            android:id="@+id/editViewLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/last_name"
+            android:inputType="textCapWords" />
 
-    <Button
-        android:id="@+id/buttonRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/sing_up" />
+        <EditText
+            android:id="@+id/editViewOld"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/how_old_are_you"
+            android:inputType="number" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/sing_up" />
+
+    </LinearLayout>
+
+</ScrollView>
