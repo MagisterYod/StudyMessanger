@@ -6,11 +6,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textViewForgotPass;
     private TextView textViewRegister;
 
-    private FirebaseAuth auth;
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +34,49 @@ public class LoginActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         initViews();
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        observeViewModel();
+        setupClickListners();
+    }
 
+    private void observeViewModel() {
+        viewModel.getError().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String errorMess) {
+                if (errorMess != null) {
+                    Toast.makeText(LoginActivity.this, errorMess, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        viewModel.getUser().observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(FirebaseUser firebaseUser) {
+                if (firebaseUser != null) {
+                    Intent intent = UserActivity.newIntent(LoginActivity.this);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
+    }
+
+    private void setupClickListners() {
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                //login
+                viewModel.login(email, password);
             }
         });
         textViewForgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //
+                Intent intent = ForgotActivity.newIntent(
+                        LoginActivity.this,
+                        inputEmail.getText().toString());
+                startActivity(intent);
             }
         });
         textViewRegister.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +86,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     private void initViews() {
