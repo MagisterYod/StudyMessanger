@@ -6,9 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.google.firebase.auth.FirebaseUser;
+
+import javax.xml.transform.sax.SAXResult;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -21,6 +28,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editViewOld;
     private Button buttonRegister;
 
+    private RegisterViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         initViews();
 
+        viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+        observeViewModel();
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,7 +47,30 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = getTrimmedValue(editViewName);
                 String lastName = getTrimmedValue(editViewLastName);
                 int age = Integer.parseInt(getTrimmedValue(editViewOld));
-                //register
+                viewModel.singUp(
+                        email, password, name, lastName, age
+                );
+            }
+        });
+    }
+
+    private void observeViewModel() {
+        viewModel.getError().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String errorMess) {
+                if (errorMess != null) {
+                    Toast.makeText(RegisterActivity.this, errorMess, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        viewModel.getUser().observe(this, new Observer<FirebaseUser>() {
+            @Override
+            public void onChanged(FirebaseUser firebaseUser) {
+                if (firebaseUser != null) {
+                    Intent intent = UserActivity.newIntent(RegisterActivity.this);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

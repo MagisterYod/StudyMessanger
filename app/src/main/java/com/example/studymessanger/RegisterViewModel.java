@@ -6,27 +6,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginViewModel extends ViewModel {
-
+public class RegisterViewModel extends ViewModel {
     private FirebaseAuth auth;
 
     private MutableLiveData<String> error = new MutableLiveData<>();
     private MutableLiveData<FirebaseUser> user = new MutableLiveData<>();
 
-    public LoginViewModel() {
-        auth = FirebaseAuth.getInstance();
-        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user.setValue(firebaseAuth.getCurrentUser());
-            }
-        });
-    }
 
     public LiveData<String> getError() {
         return error;
@@ -36,13 +24,25 @@ public class LoginViewModel extends ViewModel {
         return user;
     }
 
-    public void login(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+    public RegisterViewModel() {
+
+        auth = FirebaseAuth.getInstance();
+        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onSuccess(AuthResult authResult) {
-                user.setValue(authResult.getUser());
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user.setValue(firebaseAuth.getCurrentUser());
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        });
+    }
+
+    public void singUp(
+            String mail,
+            String password,
+            String name,
+            String lastName,
+            int age
+    ) {
+        auth.createUserWithEmailAndPassword(mail, password).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 error.setValue(e.getMessage());

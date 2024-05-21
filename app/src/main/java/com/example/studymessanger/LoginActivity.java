@@ -1,5 +1,6 @@
 package com.example.studymessanger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -37,9 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         observeViewModel();
         setupClickListners();
+
     }
 
     private void observeViewModel() {
+
         viewModel.getError().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String errorMess) {
@@ -54,7 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (firebaseUser != null) {
                     Intent intent = UserActivity.newIntent(LoginActivity.this);
                     startActivity(intent);
-                    finish();
+//                    finish();
+//                    Toast.makeText(LoginActivity.this, "Yes", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -94,5 +99,9 @@ public class LoginActivity extends AppCompatActivity {
         inputButton = findViewById(R.id.inputButton);
         textViewForgotPass = findViewById(R.id.textViewForgotPass);
         textViewRegister = findViewById(R.id.textViewRegister);
+    }
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
     }
 }

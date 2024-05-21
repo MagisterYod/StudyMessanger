@@ -14,4 +14,6 @@
     <string name="forgot_password_2">Forgot Password?</string>
     <string name="your_email">Your email:</string>
     <string name="reset_password">RESET PASSWORD</string>
+    <string name="logout">Logout</string>
+    <string name="reset_message">The reset link is successfully sent</string>
 </resources>
