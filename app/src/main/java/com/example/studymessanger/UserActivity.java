@@ -13,11 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserActivity extends AppCompatActivity {
 
+    private RecyclerView recyclerViewUsers;
+    private UserAdapter userAdapter;
     private UserViewModel viewModel;
     private Toolbar toolbar;
 
@@ -26,11 +29,17 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user);
-        toolbar = findViewById(R.id.toolBar);
+//        toolbar = findViewById(R.id.toolBar);
+        initViews();
         setSupportActionBar(toolbar);
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         observeViewModel();
+    }
 
+    private void initViews() {
+        recyclerViewUsers = findViewById(R.id.recyclerViewUser);
+        userAdapter = new UserAdapter();
+        recyclerViewUsers.setAdapter(userAdapter);
     }
 
     private void observeViewModel() {
