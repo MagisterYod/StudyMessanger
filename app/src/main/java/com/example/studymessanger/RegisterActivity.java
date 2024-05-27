@@ -47,6 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = getTrimmedValue(editViewName);
                 String lastName = getTrimmedValue(editViewLastName);
                 int age = Integer.parseInt(getTrimmedValue(editViewOld));
+
+
                 viewModel.singUp(
                         email, password, name, lastName, age
                 );

@@ -3,6 +3,7 @@ package com.example.studymessanger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,13 +17,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewUsers;
     private UserAdapter userAdapter;
     private UserViewModel viewModel;
-    private Toolbar toolbar;
+//    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +39,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 //        toolbar = findViewById(R.id.toolBar);
         initViews();
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         observeViewModel();
     }
@@ -51,6 +59,12 @@ public class UserActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
+            }
+        });
+        viewModel.getUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                userAdapter.setUsers(users);
             }
         });
     }
