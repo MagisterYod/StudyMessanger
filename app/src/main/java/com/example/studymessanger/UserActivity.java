@@ -27,10 +27,12 @@ import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
 
+    private static final String EXTRA_CURRENT_USER_ID = "current_id";
     private RecyclerView recyclerViewUsers;
     private UserAdapter userAdapter;
     private UserViewModel viewModel;
 //    private Toolbar toolbar;
+    private String curentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,21 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 //        toolbar = findViewById(R.id.toolBar);
         initViews();
+        curentUserId = getIntent().getStringExtra(EXTRA_CURRENT_USER_ID);
 //        setSupportActionBar(toolbar);
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         observeViewModel();
+        userAdapter.setOnUserClickListner(new UserAdapter.OnUserClickListner() {
+            @Override
+            public void onUserClick(User user) {
+                Intent intent = ChatActivity.newIntent(
+                        UserActivity.this,
+                        curentUserId,
+                        user.getId());
+                startActivity(intent);
+            }
+
+        });
     }
 
     private void initViews() {
@@ -83,7 +97,9 @@ public class UserActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, UserActivity.class);
+    public static Intent newIntent(Context context, String curentUserId) {
+        Intent intent = new Intent(context, UserActivity.class);
+        intent.putExtra(EXTRA_CURRENT_USER_ID, curentUserId);
+        return intent;
     }
 }
