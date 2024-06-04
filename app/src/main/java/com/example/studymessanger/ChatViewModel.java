@@ -1,5 +1,8 @@
 package com.example.studymessanger;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,7 +28,7 @@ public class ChatViewModel extends ViewModel {
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference referenceUsers = firebaseDatabase.getReference("Users");
-    private DatabaseReference referenceMessages = firebaseDatabase.getReference("Mrssages");
+    private DatabaseReference referenceMessages = firebaseDatabase.getReference("Messages");
 
     private String currentUserId;
     private String otherUserId;
@@ -33,6 +36,7 @@ public class ChatViewModel extends ViewModel {
     public ChatViewModel(String currentUserId, String otherUserId) {
         this.currentUserId = currentUserId;
         this.otherUserId = otherUserId;
+        Log.d(otherUserId, "ChatVewModel");
         referenceUsers.child(otherUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -49,11 +53,11 @@ public class ChatViewModel extends ViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Message> messageList = new ArrayList<>();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Message message = dataSnapshot.getValue(Message.class);
-                    messageList.add(message);
-                }
-                messages.setValue(messageList);
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Message message = dataSnapshot.getValue(Message.class);
+                        messageList.add(message);
+                    }
+                    messages.setValue(messageList);
             }
 
             @Override

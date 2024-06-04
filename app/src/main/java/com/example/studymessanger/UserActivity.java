@@ -3,15 +3,12 @@ package com.example.studymessanger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
@@ -32,7 +30,11 @@ public class UserActivity extends AppCompatActivity {
     private UserAdapter userAdapter;
     private UserViewModel viewModel;
 //    private Toolbar toolbar;
-    private String curentUserId;
+    private String currentUserId;
+
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference referenceUsers = firebaseDatabase.getReference("Users");
+    private DatabaseReference referenceMessages = firebaseDatabase.getReference("Messages");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 //        toolbar = findViewById(R.id.toolBar);
         initViews();
-        curentUserId = getIntent().getStringExtra(EXTRA_CURRENT_USER_ID);
+        currentUserId = getIntent().getStringExtra(EXTRA_CURRENT_USER_ID);
 //        setSupportActionBar(toolbar);
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         observeViewModel();
@@ -50,12 +52,33 @@ public class UserActivity extends AppCompatActivity {
             public void onUserClick(User user) {
                 Intent intent = ChatActivity.newIntent(
                         UserActivity.this,
-                        curentUserId,
+                        currentUserId,
                         user.getId());
                 startActivity(intent);
             }
 
         });
+//        referenceUsers.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    User user = dataSnapshot.getValue(User.class);
+//                    if (currentUserId != user.getId()) {
+//                        referenceMessages
+//                                .child(currentUserId)
+//                                .child(user.getId())
+//                                .push()
+//                                .setValue(new Message("Hello", currentUserId, user.getId()));
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     private void initViews() {
