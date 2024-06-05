@@ -36,7 +36,6 @@ public class ChatViewModel extends ViewModel {
     public ChatViewModel(String currentUserId, String otherUserId) {
         this.currentUserId = currentUserId;
         this.otherUserId = otherUserId;
-        Log.d(otherUserId, "ChatVewModel");
         referenceUsers.child(otherUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,6 +80,10 @@ public class ChatViewModel extends ViewModel {
 
     public LiveData<String> getError() {
         return error;
+    }
+
+    public void setUserStatus(Boolean isOnline) {
+        referenceUsers.child(currentUserId).child("online").setValue(isOnline);
     }
 
     public void sendMessage(Message message) {

@@ -120,9 +120,21 @@ public class UserActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static Intent newIntent(Context context, String curentUserId) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.setUserStatus(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        viewModel.setUserStatus(false);
+    }
+
+    public static Intent newIntent(Context context, String currentUserId) {
         Intent intent = new Intent(context, UserActivity.class);
-        intent.putExtra(EXTRA_CURRENT_USER_ID, curentUserId);
+        intent.putExtra(EXTRA_CURRENT_USER_ID, currentUserId);
         return intent;
     }
 }
